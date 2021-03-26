@@ -1,0 +1,5 @@
+# Getting curl to output HTTP status code?
+curl -s -o /dev/null -I -w "%{http_code}" http://www.example.org/
+
+ref. https://superuser.com/questions/272265/getting-curl-to-output-http-status-code
+
