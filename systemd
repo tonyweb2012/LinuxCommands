@@ -1,0 +1,72 @@
+### https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units
+
+## Displaying a Unit File
+To display the unit file that systemd has loaded into its system, you can use the cat command (this was added in systemd version 209). For instance, to see the unit file of the atd scheduling daemon, we could type:
+
+systemctl cat atd.service
+ 
+Output
+[Unit]
+Description=ATD daemon
+[Service]
+Type=forking
+ExecStart=/usr/bin/atd
+[Install]
+WantedBy=multi-user.target
+The output is the unit file as known to the currently running systemd process. This can be important if you have modified unit files recently or if you are overriding certain options in a unit file fragment (we will cover this later).
+
+## Displaying Dependencies
+To see a unit’s dependency tree, you can use the list-dependencies command:
+
+systemctl list-dependencies sshd.service
+ 
+This will display a hierarchy mapping the dependencies that must be dealt with in order to start the unit in question. Dependencies, in this context, include those units that are either required by or wanted by the units above it.
+
+Output
+sshd.service
+├─system.slice
+└─basic.target
+  ├─microcode.service
+  ├─rhel-autorelabel-mark.service
+  ├─rhel-autorelabel.service
+  ├─rhel-configure.service
+  ├─rhel-dmesg.service
+  ├─rhel-loadmodules.service
+  ├─paths.target
+  ├─slices.target
+. . .
+The recursive dependencies are only displayed for .target units, which indicate system states. To recursively list all dependencies, include the --all flag.
+
+To show reverse dependencies (units that depend on the specified unit), you can add the  --reverse flag to the command. Other flags that are useful are the --before and --after flags, which can be used to show units that depend on the specified unit starting before and after themselves, respectively.
+
+## Checking Unit Properties
+To see the low-level properties of a unit, you can use the show command. This will display a list of properties that are set for the specified unit using a key=value format:
+
+systemctl show sshd.service
+ 
+Output
+Id=sshd.service
+Names=sshd.service
+Requires=basic.target
+Wants=system.slice
+WantedBy=multi-user.target
+Conflicts=shutdown.target
+Before=shutdown.target multi-user.target
+After=syslog.target network.target auditd.service systemd-journald.socket basic.target system.slice
+Description=OpenSSH server daemon
+. . .
+If you want to display a single property, you can pass the -p flag with the property name. For instance, to see the conflicts that the sshd.service unit has, you can type:
+
+systemctl show sshd.service -p Conflicts
+ 
+Output
+Conflicts=shutdown.target
+
+## Editing Unit Files
+While the specific format for unit files is outside of the scope of this tutorial, systemctl provides built-in mechanisms for editing and modifying unit files if you need to make adjustments. This functionality was added in systemd version 218.
+
+The edit command, by default, will open a unit file snippet for the unit in question:
+
+sudo systemctl edit nginx.service
+
+...
