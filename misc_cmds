@@ -51,5 +51,10 @@ $ vi /etc/ssh/sshd_banner
 
 # To create a Welcome message after login you can use the "/etc/motd" file. The content of the welcome message will be displayed after every successful ssh login.
 
+## verify the fingerprint using the ssh command in the terminal
+# ssh-keygen -l -f /etc/ssh/ssh_host_ecdsa_key.pub
+
+## verify the MD5 fingerprint key 
+# ssh-keygen -l -f /etc/ssh/ssh_host_ecdsa_key.pub -E md5
 
 
