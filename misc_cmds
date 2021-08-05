@@ -1,0 +1,55 @@
+### SELinux
+
+# tell SELinux that the SSH service is now running on the new port 1875. Restart the sshd service and try to access it from the client using port 22 and port 1875.
+$ sudo semanage port -a -t ssh_port_t -p tcp 1875
+
+
+### Firewalld
+
+# add a new rule to permit the new port 1875 to the firewall
+$ sudo firewall-cmd --permanent --add-port=1875/tcp
+
+
+### SSH config
+
+## /etc/ssh/sshd_config
+
+# Enable SSH Protocol Version 2
+Protocol 2
+
+# Customize the default SSH port (22)
+Port 1875
+
+# Disable root login (SSH)
+PermitRootLogin no
+
+# disable tunneled clear text passwords
+Password Authentication no
+
+# Disable X11 Forwarding
+X11Forwarding no
+
+# Disable Empty Passwords
+PermitEmptyPasswords no
+
+# Set Max Authentication Attempts
+MaxAuthTries 3
+
+# Allow only Specific IP Address
+$ sudo vi /etc/hosts.allow
+
+sshd : 192.168.1.200 : ALLOW
+sshd : 192.168.1.201 : ALLOW
+sshd : ALL : DENY
+
+# Set Idle Timeout
+ClientAliveInterval 300
+ClientAliveCountMax 0
+
+# SSH warning banner
+$ vi /etc/ssh/sshd_banner
+
+# To create a Welcome message after login you can use the "/etc/motd" file. The content of the welcome message will be displayed after every successful ssh login.
+
+
+
