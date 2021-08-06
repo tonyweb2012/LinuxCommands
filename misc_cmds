@@ -58,3 +58,7 @@ $ vi /etc/ssh/sshd_banner
 # ssh-keygen -l -f /etc/ssh/ssh_host_ecdsa_key.pub -E md5
 
 
+############## Links ##############
+
+# NOHUP
+https://www.linuxfordevices.com/tutorials/linux/nohup-command#Nohup-command-examples
