@@ -1,0 +1,8 @@
+On a server with the PostgreSQL CLI installed, execute the following command to export a PG db. Make sure to replace the values in <>.
+
+pg_dump -h <host_name> -p <port> -d <database> -U <user> -f <dump_file.sql>
+
+The dump_file.sql that you specified with be created in the current directory or in the directory specified with the -f parameter.
+
+---
+
