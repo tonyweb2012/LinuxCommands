@@ -1,3 +1,9 @@
+### journalctl
+
+# get the messages between 1:26 PM and 1:27 PM, only errors (priority=0) and only for our script (collect_data_from_servers.v6.sh) like this, output in JSON format:
+journalctl --since 13:26 --until 13:27 --output json-pretty PRIORITY=0 MESSAGE_ID=collect_data_from_servers.v6.sh
+
+
 ### SELinux
 
 # tell SELinux that the SSH service is now running on the new port 1875. Restart the sshd service and try to access it from the client using port 22 and port 1875.
